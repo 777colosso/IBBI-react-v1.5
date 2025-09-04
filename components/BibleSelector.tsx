@@ -39,7 +39,7 @@ const BibleSelector: React.FC<BibleSelectorProps> = ({ version, setVersion, book
 
   if (isFloating) {
     return (
-        <div className="bg-slate-800 p-4">
+        <div className="bg-transparent p-4">
             <div className="grid grid-cols-1 gap-y-4">
                 <div>
                     <label htmlFor="version-floating" className="block text-sm font-medium text-slate-400 mb-1">{t.version}</label>

@@ -102,6 +102,7 @@ interface SermonEditorProps {
     onFetchInlineScriptures: (itemId: string) => void;
     isSermonColorEnabled: boolean;
     onSermonColorEnabledChange: (value: boolean) => void;
+    containerClassName?: string;
 }
 
 const SermonEditor: React.FC<SermonEditorProps> = ({
@@ -111,7 +112,8 @@ const SermonEditor: React.FC<SermonEditorProps> = ({
     onInputChange, onBodyItemChange, onAddBodyItem, onRemoveBodyItem, onMoveBodyItem,
     onGenerate, onClear, onConfirmClear, onCloseClearModal,
     verseExpansionMode, onVerseExpansionModeChange, onFetchInlineScriptures,
-    isSermonColorEnabled, onSermonColorEnabledChange
+    isSermonColorEnabled, onSermonColorEnabledChange,
+    containerClassName = ''
 }) => {
     
     const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
@@ -195,7 +197,7 @@ const SermonEditor: React.FC<SermonEditorProps> = ({
 
     return (
         <>
-        <div className={`bg-slate-800 rounded-lg shadow-md flex flex-col overflow-hidden transition-all duration-500 ease-in-out ${isMinimized ? 'max-h-16' : 'h-full'}`}>
+        <div className={`bg-slate-800 rounded-lg shadow-md flex flex-col overflow-hidden transition-all duration-500 ease-in-out ${isMinimized ? 'max-h-16' : 'h-full'} ${containerClassName}`}>
             {/* Header */}
             <header 
                 className={`p-4 border-b border-slate-700 flex justify-between items-center flex-shrink-0 ${isMinimized ? 'cursor-pointer border-b-transparent h-full' : ''}`}

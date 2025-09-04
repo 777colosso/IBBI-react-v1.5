@@ -10,6 +10,7 @@ interface ModeSwitcherProps {
   activePanel: ActivePanel;
   setActivePanel: (panel: ActivePanel) => void;
   onScrollToggle: () => void;
+  lastInteractedSermonPanel: 'editor' | 'panel';
   t: TranslationSet;
 }
 
@@ -27,7 +28,7 @@ const SelectorIcon = ({ className = "w-5 h-5" }) => <svg xmlns="http://www.w3.or
 const ScrollToggleIcon = ({ className = "w-5 h-5" }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m-4-4l4 4 4-4M8 8l4-4 4 4" /></svg>;
 
 
-const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ mode, setMode, activePanel, setActivePanel, onScrollToggle, t }) => {
+const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ mode, setMode, activePanel, setActivePanel, onScrollToggle, lastInteractedSermonPanel, t }) => {
   
   const getPanelButtonClass = (panel: 'chat' | 'selector' | 'reader') => {
     return `p-2 rounded-full transition-colors duration-200 ${

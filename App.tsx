@@ -51,6 +51,8 @@ const [language, setLanguage] = useState<Language>('pt');
   const [activeSermonPanel, setActiveSermonPanel] = useState<ActiveSermonPanel>(null);
   const [lastInteractedSermonPanel, setLastInteractedSermonPanel] = useState<'editor' | 'panel'>('editor');
   const [readerMinimizedBeforeSermonMode, setReaderMinimizedBeforeSermonMode] = useState(isReaderMinimized);
+  const [pulsePanel, setPulsePanel] = useState<'editor' | 'panel' | null>(null);
+  const [pulseKey, setPulseKey] = useState(0);
 
   const [chapterContent, setChapterContent] = useState<Verse[]>([]);
   const [chapterLoading, setChapterLoading] = useState<boolean>(true);
@@ -196,6 +198,15 @@ const [language, setLanguage] = useState<Language>('pt');
       }, 2500);
     }
   };
+
+  useEffect(() => {
+    if (pulsePanel) {
+      const timer = setTimeout(() => {
+        setPulsePanel(null);
+      }, 1200); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [pulseKey, pulsePanel]);
 
   const loadChapter = useCallback(async () => {
     setChapterLoading(true);
@@ -1128,16 +1139,25 @@ const [language, setLanguage] = useState<Language>('pt');
   };
   
   const handleScrollToggle = () => {
+    const headerHeight = document.querySelector('header')?.offsetHeight || 64; // Get header height dynamically
     if (lastInteractedSermonPanel === 'editor') {
-        if (activeSermonPanel && sermonActivePanelRef.current) {
-            sermonActivePanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setLastInteractedSermonPanel('panel');
-        }
+      if (activeSermonPanel && sermonActivePanelRef.current) {
+        const rect = sermonActivePanelRef.current.getBoundingClientRect();
+        const scrollTop = window.pageYOffset + rect.top - headerHeight - 20;
+        window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        setLastInteractedSermonPanel('panel');
+        setPulsePanel('panel');
+        setPulseKey(k => k + 1);
+      }
     } else if (lastInteractedSermonPanel === 'panel') {
-        if (sermonEditorRef.current) {
-            sermonEditorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setLastInteractedSermonPanel('editor');
-        }
+      if (sermonEditorRef.current) {
+        const rect = sermonEditorRef.current.getBoundingClientRect();
+        const scrollTop = window.pageYOffset + rect.top - headerHeight - 20;
+        window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        setLastInteractedSermonPanel('editor');
+        setPulsePanel('editor');
+        setPulseKey(k => k + 1);
+      }
     }
   };
 
@@ -1568,8 +1588,12 @@ const [language, setLanguage] = useState<Language>('pt');
               {/* Sermon Mode View */}
               <div className="w-1/2 flex-shrink-0 h-full flex flex-col pt-8">
                 {activeSermonPanel && (
-                  <div ref={sermonActivePanelRef} className="mb-8 animate-fade-in-down" onClick={() => setLastInteractedSermonPanel('panel')}>
-                      <div className="bg-slate-800 rounded-lg shadow-md flex flex-col max-h-[60vh] overflow-hidden relative">
+                  <div 
+                    ref={sermonActivePanelRef} 
+                    className={`mb-8 animate-fade-in-down`}
+                    onClick={(e) => { e.stopPropagation(); setLastInteractedSermonPanel('panel'); }}
+                  >
+                      <div key={pulseKey} className={`rounded-lg shadow-md flex flex-col max-h-[60vh] overflow-hidden relative ${pulsePanel === 'panel' ? 'animate-pulse-border' : 'bg-slate-800'}`}>
                           <button
                             onClick={() => setActiveSermonPanel(null)}
                             className="absolute top-3 right-3 z-10 p-1 rounded-full text-slate-400 bg-slate-900/50 hover:bg-slate-700 hover:text-white transition-colors"
@@ -1631,7 +1655,12 @@ const [language, setLanguage] = useState<Language>('pt');
                       </div>
                   </div>
                 )}
-                <div ref={sermonEditorRef} onClick={() => setLastInteractedSermonPanel('editor')}>
+                <div 
+                  ref={sermonEditorRef} 
+                  onClick={(e) => { e.stopPropagation(); setLastInteractedSermonPanel('editor'); }}
+                  key={pulseKey + 1000} // Use a different key to avoid conflicts
+                  className={`rounded-lg ${pulsePanel === 'editor' ? 'animate-pulse-border' : 'bg-slate-800'}`}
+                >
                     <SermonEditor
                       t={t}
                       isMinimized={isSermonEditorMinimized}
@@ -1656,6 +1685,7 @@ const [language, setLanguage] = useState<Language>('pt');
                       onFetchInlineScriptures={handleFetchInlineScriptures}
                       isSermonColorEnabled={isSermonColorEnabled}
                       onSermonColorEnabledChange={setIsSermonColorEnabled}
+                      containerClassName={pulsePanel === 'editor' ? '!bg-transparent' : ''}
                     />
                 </div>
               </div>
@@ -1709,6 +1739,7 @@ const [language, setLanguage] = useState<Language>('pt');
           activePanel={activeSermonPanel}
           setActivePanel={handlePanelToggle}
           onScrollToggle={handleScrollToggle}
+          lastInteractedSermonPanel={lastInteractedSermonPanel}
           t={t}
         />
 

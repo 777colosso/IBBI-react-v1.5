@@ -607,7 +607,7 @@ const ChapterDisplay: React.FC<ChapterDisplayProps> = ({
   };
 
   const mainContainerClass = isFloating 
-    ? '' 
+    ? 'bg-transparent' 
     : `bg-slate-800 rounded-lg shadow-md flex flex-col overflow-hidden transition-all duration-500 ease-in-out ${isMinimized ? 'max-h-16' : ''}`;
 
   return (
