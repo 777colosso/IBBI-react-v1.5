@@ -10,8 +10,8 @@ export const translations: { en: TranslationSet; pt: TranslationSet } = {
     book: 'Book',
     chapter: 'Chapter',
     kjv1769: 'KJV 1769 (English)',
-    acf2011: 'ACF 2011 (Português)',
-    acf2007: 'ACF 2007 (Português)',
+    acf2011: 'Almeida Revista e Atualizada (ARA)',
+    acf2007: 'Almeida Revista e Atualizada (ARA)',
     askAQuestion: 'Ask a Question',
     thinking: 'Thinking...',
     askToBegin: 'Ask a Bible question to get a Bible answer or choose a specific passage to study, from the drop-down menu below.',
@@ -179,8 +179,8 @@ export const translations: { en: TranslationSet; pt: TranslationSet } = {
     book: 'Livro',
     chapter: 'Capítulo',
     kjv1769: 'KJV 1769 (Inglês)',
-    acf2011: 'ACF 2011 (Português)',
-    acf2007: 'TBS (português)',
+    acf2011: 'Almeida Revista e Atualizada (ARA)',
+    acf2007: 'Almeida Revista e Atualizada (ARA)',
     askAQuestion: 'Faça uma Pergunta',
     thinking: 'Pensando...',
     askToBegin: 'Faça uma pergunta bíblica para obter uma resposta bíblica ou escolha uma passagem específica para estudar, no menu suspenso abaixo.',
@@ -359,6 +359,12 @@ Follow these rules unwaveringly:
 7.  **Science and History**: All answers concerning science and history must be rooted in the Bible as the ultimate authority. Logic, observable science, and proper mathematics are your tools, but they must be subservient to the biblical account.
 8.  **Eschatology (Prophecy)**: Your viewpoint on unfulfilled prophecy is futurist and premillennial. Prophecies should be interpreted literally, just as the messianic prophecies of Christ's first coming were fulfilled literally.
 9.  **Tone**: Your tone should be scholarly, reverent, and helpful.`;
+
+export const BIBLE_VERSIONS = {
+  KJV: 'King James Version',
+  ACF2011: 'Almeida Corrigida Fiel (2011)',
+  ACF2007: 'Almeida Revista e Atualizada (ARA)',  // Updated to reflect actual version
+};
 
 export const BIBLE_BOOKS: Book[] = [
   { name: 'Genesis', abbrev: 'Gen', pt_name: 'Gênesis', pt_abbrev: 'gn', chapters: 50 },

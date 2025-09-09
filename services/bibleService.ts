@@ -1,8 +1,5 @@
-
-
-
 import { BibleVersion, Verse } from '../types';
-import { ACF_2007_API_URL, ACF_2011_API_URL, BIBLE_BOOKS } from '../constants';
+import { ACF_2007_API_URL, BIBLE_BOOKS } from '../constants';
 
 async function fetchKJV(bookName: string, chapter: number): Promise<Verse[]> {
   const bookData = BIBLE_BOOKS.find(b => b.name === bookName);
@@ -49,37 +46,6 @@ async function fetchACF2007(bookName: string, chapter: number): Promise<Verse[]>
 }
 
 
-async function fetchACF2011(bookName: string, chapter: number): Promise<Verse[]> {
-  const bookData = BIBLE_BOOKS.find(b => b.name === bookName);
-  if (!bookData) {
-    throw new Error(`Could not find data for book: ${bookName}`);
-  }
-  const abbrev = bookData.pt_abbrev;
-  const url = `${ACF_2011_API_URL}/verses/acf/${abbrev}/${chapter}`;
-  
-  const response = await fetch(url);
-  if (!response.ok) {
-     const errorData = await response.text();
-     try {
-       const parsedError = JSON.parse(errorData);
-       if (parsedError && parsedError.msg) {
-         throw new Error(`ACF 2011 API error: ${parsedError.msg}`);
-       }
-     } catch (e) {
-       // Not a JSON error, throw original text.
-     }
-     throw new Error(`ACF 2011 API error (${response.status}): ${errorData}`);
-  }
-  const data = await response.json();
-  if (!Array.isArray(data.verses)) {
-     throw new Error("ACF 2011 API returned unexpected data format.");
-  }
-  return data.verses.map((v: any) => ({
-    number: v.number,
-    text: v.text.trim(),
-  }));
-}
-
 export async function fetchChapter(
   version: BibleVersion,
   bookName: string,
@@ -89,8 +55,6 @@ export async function fetchChapter(
     switch (version) {
       case BibleVersion.KJV:
         return await fetchKJV(bookName, chapter);
-      case BibleVersion.ACF2011:
-        return await fetchACF2011(bookName, chapter);
       case BibleVersion.ACF2007:
         return await fetchACF2007(bookName, chapter);
       default:
@@ -148,17 +112,8 @@ export async function fetchCrossReferenceText(reference: string, version: BibleV
             if (!response.ok) throw new Error(`API error ${response.status}: ${await response.text()}`);
             const data = await response.json();
             return data.verses.map((v: any) => `${v.verse}. ${v.text.trim()}`).join('\n');
-        } else { // ACF2011
-            const url = `${ACF_2011_API_URL}/verses/acf/${bookData.pt_abbrev}/${chapter}`;
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`API error ${response.status}: ${await response.text()}`);
-            const data = await response.json();
-
-            const versesInRange = hasVersePart 
-                ? data.verses.filter((v: any) => v.number >= startVerse && v.number <= endVerse)
-                : data.verses;
-                
-            return versesInRange.map((v: any) => `${v.number}. ${v.text.trim()}`).join('\n');
+        } else {
+            throw new Error(`Unsupported Bible version for cross-reference: ${version}`);
         }
     } catch (error) {
         console.error(`Failed to fetch cross reference ${reference}:`, error);
