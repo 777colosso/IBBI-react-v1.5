@@ -17,6 +17,8 @@ import SelectionToolbar from './components/SelectionToolbar';
 import { Chat } from '@google/genai';
 import { FontSizeProvider } from './contexts/FontSizeContext';
 
+import './styles/dynamic-styles.css';
+
 type AppMode = 'study' | 'sermon';
 type ActiveSermonPanel = 'chat' | 'selector' | 'reader' | null;
 type VerseExpansionMode = 'none' | 'fetchedOnly' | 'all';
@@ -1503,8 +1505,8 @@ const [language, setLanguage] = useState<Language>('pt');
           {/* Mobile Layout */}
           <div className="lg:hidden h-full overflow-x-hidden">
             <div 
-              className="flex transition-transform duration-700 ease-in-out h-full"
-              style={{ width: '200%', transform: mode === 'sermon' ? 'translateX(-50%)' : 'translateX(0)' }}
+              className="flex transition-transform duration-700 ease-in-out h-full w-200"
+              data-transform={mode === 'sermon' ? 'translateX(-50%)' : 'translateX(0)'}
             >
               {/* Study Mode View */}
               <div className="w-1/2 flex-shrink-0 h-full flex flex-col pt-8">

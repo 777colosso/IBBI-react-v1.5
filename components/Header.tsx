@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Language, TranslationSet } from '../types';
 import { useFontSize } from '../contexts/FontSizeContext';
 import ReactDOM from 'react-dom';
+import '../styles/dynamic-styles.css';
 
 interface HeaderProps {
   language: Language;
@@ -36,12 +37,11 @@ const FontSizeButton: React.FC<{ t: TranslationSet }> = ({ t }) => {
           <button
             key={size}
             onClick={() => handleFontSizeSelect(size)}
-            className={`w-full py-2 px-4 rounded-md transition-colors ${
+            className={`w-full py-2 px-4 rounded-md transition-colors font-size-${size} ${
               currentFontSize === size
                 ? 'bg-amber-500 text-slate-900'
                 : 'text-amber-400 hover:bg-slate-700'
             }`}
-            style={{ fontSize: `${size}px` }}
             title={`${size}px`}
           >
             A

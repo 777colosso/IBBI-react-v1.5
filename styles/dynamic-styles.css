@@ -1,0 +1,140 @@
+/* Minimum height utilities */
+.min-h-16 {
+  min-height: 64px;
+}
+
+/* Width utilities */
+.w-200 {
+  width: 200%;
+}
+
+/* Transform utilities for mobile layout */
+[data-transform="translateX(-50%)"] {
+  transform: translateX(-50%);
+}
+
+[data-transform="translateX(0)"] {
+  transform: translateX(0);
+}
+
+/* Progress bar styles using data attributes */
+.progress-bar-dynamic {
+  width: 2%; /* default starting width */
+  transition: width 0.15s linear;
+}
+
+.progress-bar-dynamic.single-duration {
+  transition-duration: 0.1s;
+}
+
+.progress-bar-dynamic.chapter-duration {
+  transition-duration: 0.15s;
+}
+
+/* Progress width classes for animation */
+.progress-2 { width: 2% !important; }
+.progress-3 { width: 3% !important; }
+.progress-4 { width: 4% !important; }
+.progress-5 { width: 5% !important; }
+.progress-6 { width: 6% !important; }
+.progress-7 { width: 7% !important; }
+.progress-8 { width: 8% !important; }
+.progress-9 { width: 9% !important; }
+.progress-10 { width: 10% !important; }
+.progress-11 { width: 11% !important; }
+.progress-12 { width: 12% !important; }
+.progress-13 { width: 13% !important; }
+.progress-14 { width: 14% !important; }
+.progress-15 { width: 15% !important; }
+.progress-16 { width: 16% !important; }
+.progress-17 { width: 17% !important; }
+.progress-18 { width: 18% !important; }
+.progress-19 { width: 19% !important; }
+.progress-20 { width: 20% !important; }
+.progress-21 { width: 21% !important; }
+.progress-22 { width: 22% !important; }
+.progress-23 { width: 23% !important; }
+.progress-24 { width: 24% !important; }
+.progress-25 { width: 25% !important; }
+.progress-26 { width: 26% !important; }
+.progress-27 { width: 27% !important; }
+.progress-28 { width: 28% !important; }
+.progress-29 { width: 29% !important; }
+.progress-30 { width: 30% !important; }
+.progress-31 { width: 31% !important; }
+.progress-32 { width: 32% !important; }
+.progress-33 { width: 33% !important; }
+.progress-34 { width: 34% !important; }
+.progress-35 { width: 35% !important; }
+.progress-36 { width: 36% !important; }
+.progress-37 { width: 37% !important; }
+.progress-38 { width: 38% !important; }
+.progress-39 { width: 39% !important; }
+.progress-40 { width: 40% !important; }
+.progress-41 { width: 41% !important; }
+.progress-42 { width: 42% !important; }
+.progress-43 { width: 43% !important; }
+.progress-44 { width: 44% !important; }
+.progress-45 { width: 45% !important; }
+.progress-46 { width: 46% !important; }
+.progress-47 { width: 47% !important; }
+.progress-48 { width: 48% !important; }
+.progress-49 { width: 49% !important; }
+.progress-50 { width: 50% !important; }
+.progress-51 { width: 51% !important; }
+.progress-52 { width: 52% !important; }
+.progress-53 { width: 53% !important; }
+.progress-54 { width: 54% !important; }
+.progress-55 { width: 55% !important; }
+.progress-56 { width: 56% !important; }
+.progress-57 { width: 57% !important; }
+.progress-58 { width: 58% !important; }
+.progress-59 { width: 59% !important; }
+.progress-60 { width: 60% !important; }
+.progress-61 { width: 61% !important; }
+.progress-62 { width: 62% !important; }
+.progress-63 { width: 63% !important; }
+.progress-64 { width: 64% !important; }
+.progress-65 { width: 65% !important; }
+.progress-66 { width: 66% !important; }
+.progress-67 { width: 67% !important; }
+.progress-68 { width: 68% !important; }
+.progress-69 { width: 69% !important; }
+.progress-70 { width: 70% !important; }
+.progress-71 { width: 71% !important; }
+.progress-72 { width: 72% !important; }
+.progress-73 { width: 73% !important; }
+.progress-74 { width: 74% !important; }
+.progress-75 { width: 75% !important; }
+.progress-76 { width: 76% !important; }
+.progress-77 { width: 77% !important; }
+.progress-78 { width: 78% !important; }
+.progress-79 { width: 79% !important; }
+.progress-80 { width: 80% !important; }
+.progress-81 { width: 81% !important; }
+.progress-82 { width: 82% !important; }
+.progress-83 { width: 83% !important; }
+.progress-84 { width: 84% !important; }
+.progress-85 { width: 85% !important; }
+.progress-86 { width: 86% !important; }
+.progress-87 { width: 87% !important; }
+.progress-88 { width: 88% !important; }
+.progress-89 { width: 89% !important; }
+.progress-90 { width: 90% !important; }
+.progress-91 { width: 91% !important; }
+.progress-92 { width: 92% !important; }
+.progress-93 { width: 93% !important; }
+.progress-94 { width: 94% !important; }
+.progress-95 { width: 95% !important; }
+.progress-96 { width: 96% !important; }
+.progress-97 { width: 97% !important; }
+.progress-98 { width: 98% !important; }
+
+/* Font size utilities for dynamic font sizing */
+.font-size-12 { font-size: 12px; }
+.font-size-14 { font-size: 14px; }
+.font-size-16 { font-size: 16px; }
+.font-size-18 { font-size: 18px; }
+.font-size-20 { font-size: 20px; }
+.font-size-22 { font-size: 22px; }
+.font-size-24 { font-size: 24px; }

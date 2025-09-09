@@ -3,6 +3,7 @@ import { Verse, TranslationSet, OutlineItem, Language, ChapterViewMode } from '.
 import Spinner from './Spinner';
 import ActionButtons from './ActionButtons';
 import MobileModal from './MobileModal';
+import '../styles/dynamic-styles.css';
 
 interface ChapterDisplayProps {
   loading: boolean;
@@ -144,6 +145,9 @@ const ProgressIndicator: React.FC<{ onCancel: () => void; t: TranslationSet; loa
     };
   }, [loadType]);
 
+  const durationClass = loadType === 'single' ? 'single-duration' : 'chapter-duration';
+  const progressClass = `progress-${progress}`;
+
   return (
     <div className="w-full">
         <div className="text-center text-xs text-slate-400 mb-1 h-4 animate-pulse">
@@ -151,7 +155,7 @@ const ProgressIndicator: React.FC<{ onCancel: () => void; t: TranslationSet; loa
         </div>
         <div className="flex items-center space-x-3 w-full">
           <div className="w-full bg-slate-600 rounded-full h-2">
-            <div className="bg-green-500 h-2 rounded-full" style={{ width: `${progress}%`, transition: `width ${loadType === 'single' ? 0.1 : 0.15}s linear` }}></div>
+            <div className={`bg-green-500 h-2 rounded-full progress-bar-dynamic ${durationClass} ${progressClass}`}></div>
           </div>
           <button onClick={onCancel} title="Stop generation" className="p-1 rounded-full bg-red-600 hover:bg-red-500 text-white flex-shrink-0">
             <StopIcon className="w-4 h-4" />
@@ -614,23 +618,29 @@ const ChapterDisplay: React.FC<ChapterDisplayProps> = ({
     <div className={mainContainerClass}>
       {/* Primary Header */}
       {!isFloating && (
-          <div 
-            className={`flex items-center justify-between p-4 flex-shrink-0 ${isMinimized ? 'cursor-pointer h-full border-b-transparent' : 'border-b border-slate-700'}`}
-            onClick={isMinimized ? onToggleMinimize : undefined}
-            style={{minHeight: '64px'}}
-            role={isMinimized ? 'button' : 'region'}
-            aria-label={isMinimized ? 'Maximize reader panel' : undefined}
-            tabIndex={isMinimized ? 0 : -1}
-          >
-            <h2 className="text-2xl font-semibold text-amber-400 font-serif">{t.godsWord}</h2>
-            <button 
-              onClick={(e) => { e.stopPropagation(); onToggleMinimize(); }} 
-              className="p-1 rounded-full text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
-              aria-label={isMinimized ? 'Maximize' : 'Minimize'}
+          isMinimized ? (
+            <div 
+              className="flex items-center justify-between p-4 flex-shrink-0 min-h-16 cursor-pointer h-full border-b-transparent"
+              onClick={onToggleMinimize}
+              role="button"
+              aria-label="Maximize reader panel"
+              tabIndex={0}
             >
-              {isMinimized ? <MaximizeIcon className="w-5 h-5" /> : <MinimizeIcon className="w-5 h-5" />}
-            </button>
-          </div>
+              <h2 className="text-2xl font-semibold text-amber-400 font-serif">{t.godsWord}</h2>
+              <MaximizeIcon className="w-5 h-5 text-slate-400" />
+            </div>
+          ) : (
+            <div className="flex items-center justify-between p-4 flex-shrink-0 min-h-16 border-b border-slate-700">
+              <h2 className="text-2xl font-semibold text-amber-400 font-serif">{t.godsWord}</h2>
+              <button 
+                onClick={onToggleMinimize} 
+                className="p-1 rounded-full text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
+                aria-label="Minimize"
+              >
+                <MinimizeIcon className="w-5 h-5" />
+              </button>
+            </div>
+          )
       )}
 
       {/* Secondary Header (Controls) */}

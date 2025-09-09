@@ -3,6 +3,7 @@ import { BibleVersion, Language } from '../src/types';
 import { BIBLE_BOOKS } from '../src/constants';
 import { TranslationSet } from '../src/types';
 import { BIBLE_VERSIONS } from '../src/hooks/useBibleApi';
+import '../styles/dynamic-styles.css';
 
 interface BibleSelectorProps {
   version: BibleVersion;
@@ -77,9 +78,8 @@ const BibleSelector: React.FC<BibleSelectorProps> = ({ version, setVersion, book
   return (
     <div className={`bg-slate-800 rounded-lg shadow-md overflow-hidden transition-all duration-500 ease-in-out ${isPulsing ? 'animate-pulse-border' : ''} ${isMinimized ? 'max-h-16' : 'max-h-80'}`}>
         <div 
-          className={`flex items-center justify-between p-4 ${isMinimized ? 'cursor-pointer h-full' : 'border-b border-slate-700'}`}
+          className={`flex items-center justify-between p-4 min-h-16 ${isMinimized ? 'cursor-pointer h-full' : 'border-b border-slate-700'}`}
           onClick={isMinimized ? onToggleMinimize : undefined}
-          style={{ minHeight: '64px' }}
         >
           <h2 className="text-2xl font-semibold text-amber-400 font-serif">{t.passageSelection}</h2>
           <button 
