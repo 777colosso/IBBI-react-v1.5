@@ -1128,6 +1128,9 @@ const [language, setLanguage] = useState<Language>('pt');
     case BibleVersion.ACF2007:
       currentVersionDisplayName = t.acf2007;
       break;
+    case 'ACF2007_LOCAL' as BibleVersion:
+      currentVersionDisplayName = 'Almeida Corrigida Fiel (2007 ACF)';
+      break;
   }
   
   const handlePanelToggle = (panel: ActiveSermonPanel) => {

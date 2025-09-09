@@ -45,6 +45,123 @@ async function fetchACF2007(bookName: string, chapter: number): Promise<Verse[]>
   }));
 }
 
+async function fetchACF2007Local(bookName: string, chapter: number): Promise<Verse[]> {
+  const bookData = BIBLE_BOOKS.find(b => b.name === bookName);
+  if (!bookData) {
+    throw new Error(`Could not find data for book: ${bookName}`);
+  }
+  
+  // Try different properties to find book abbreviation
+  let bookAbbr = (bookData as any)?.abbr?.toLowerCase?.();
+  
+  // If abbr is not available, try other common properties
+  if (!bookAbbr) {
+    bookAbbr = (bookData as any)?.abbreviation?.toLowerCase?.();
+  }
+  if (!bookAbbr) {
+    bookAbbr = (bookData as any)?.short_name?.toLowerCase?.();
+  }
+  if (!bookAbbr) {
+    bookAbbr = (bookData as any)?.code?.toLowerCase?.();
+  }
+  
+  // As a fallback, create abbreviation from the book name
+  if (!bookAbbr) {
+    // Portuguese book abbreviations mapping to match actual file names
+    const abbreviations: { [key: string]: string } = {
+      'Genesis': 'gn',
+      'Exodus': 'ex',
+      'Leviticus': 'lv',
+      'Numbers': 'nm',
+      'Deuteronomy': 'dt',
+      'Joshua': 'js',
+      'Judges': 'jz',
+      'Ruth': 'rt',
+      '1 Samuel': '1sm',
+      '2 Samuel': '2sm',
+      '1 Kings': '1rs',
+      '2 Kings': '2rs',
+      '1 Chronicles': '1cr',
+      '2 Chronicles': '2cr',
+      'Ezra': 'ed',
+      'Nehemiah': 'ne',
+      'Esther': 'et',
+      'Job': 'jó',
+      'Psalms': 'sl',
+      'Proverbs': 'pv',
+      'Ecclesiastes': 'ec',
+      'Song of Solomon': 'ct',
+      'Isaiah': 'is',
+      'Jeremiah': 'jr',
+      'Lamentations': 'lm',
+      'Ezekiel': 'ez',
+      'Daniel': 'dn',
+      'Hosea': 'os',
+      'Joel': 'jl',
+      'Amos': 'am',
+      'Obadiah': 'ob',
+      'Jonah': 'jn',
+      'Micah': 'mq',
+      'Nahum': 'na',
+      'Habakkuk': 'hc',
+      'Zephaniah': 'sf',
+      'Haggai': 'ag',
+      'Zechariah': 'zc',
+      'Malachi': 'ml',
+      'Matthew': 'mt',
+      'Mark': 'mc',
+      'Luke': 'lc',
+      'John': 'jo',
+      'Acts': 'atos',
+      'Romans': 'rm',
+      '1 Corinthians': '1co',
+      '2 Corinthians': '2co',
+      'Galatians': 'gl',
+      'Ephesians': 'ef',
+      'Philippians': 'fp',
+      'Colossians': 'cl',
+      '1 Thessalonians': '1ts',
+      '2 Thessalonians': '2ts',
+      '1 Timothy': '1tm',
+      '2 Timothy': '2tm',
+      'Titus': 'tt',
+      'Philemon': 'fm',
+      'Hebrews': 'hb',
+      'James': 'tg',
+      '1 Peter': '1pe',
+      '2 Peter': '2pe',
+      '1 John': '1jo',
+      '2 John': '2jo',
+      '3 John': '3jo',
+      'Jude': 'jd',
+      'Revelation': 'ap'
+    };
+    
+    bookAbbr = abbreviations[bookName];
+  }
+  
+  if (!bookAbbr) {
+    console.error('Available book data:', bookData);
+    throw new Error(`Book abbreviation not found for ${bookName}. Available properties: ${Object.keys(bookData).join(', ')}`);
+  }
+  
+  const url = `/Biblias/2007 ACF/output_books/${bookAbbr}.json`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  const data = await response.json();
+  const chapterData = data.chapters[chapter - 1];
+  if (!chapterData) {
+    throw new Error(`Chapter not found: ${chapter}`);
+  }
+  
+  return chapterData.map((text: string, index: number) => ({
+    number: index + 1,
+    text: text.trim(),
+  }));
+}
 
 export async function fetchChapter(
   version: BibleVersion,
@@ -57,6 +174,8 @@ export async function fetchChapter(
         return await fetchKJV(bookName, chapter);
       case BibleVersion.ACF2007:
         return await fetchACF2007(bookName, chapter);
+      case 'ACF2007_LOCAL' as BibleVersion:
+        return await fetchACF2007Local(bookName, chapter);
       default:
         throw new Error(`Unsupported Bible version: ${version}`);
     }
@@ -112,6 +231,121 @@ export async function fetchCrossReferenceText(reference: string, version: BibleV
             if (!response.ok) throw new Error(`API error ${response.status}: ${await response.text()}`);
             const data = await response.json();
             return data.verses.map((v: any) => `${v.verse}. ${v.text.trim()}`).join('\n');
+        } else if (version === 'ACF2007_LOCAL' as BibleVersion) {
+            // Handle local ACF2007 version
+            // Try different properties to find book abbreviation
+            let bookAbbr = (bookData as any)?.abbr?.toLowerCase?.();
+            
+            // If abbr is not available, try other common properties
+            if (!bookAbbr) {
+                bookAbbr = (bookData as any)?.abbreviation?.toLowerCase?.();
+            }
+            if (!bookAbbr) {
+                bookAbbr = (bookData as any)?.short_name?.toLowerCase?.();
+            }
+            if (!bookAbbr) {
+                bookAbbr = (bookData as any)?.code?.toLowerCase?.();
+            }
+            
+            // As a fallback, create abbreviation from the book name
+            if (!bookAbbr) {
+                // Portuguese book abbreviations mapping to match actual file names
+                const abbreviations: { [key: string]: string } = {
+                    'Genesis': 'gn',
+                    'Exodus': 'ex',
+                    'Leviticus': 'lv',
+                    'Numbers': 'nm',
+                    'Deuteronomy': 'dt',
+                    'Joshua': 'js',
+                    'Judges': 'jz',
+                    'Ruth': 'rt',
+                    '1 Samuel': '1sm',
+                    '2 Samuel': '2sm',
+                    '1 Kings': '1rs',
+                    '2 Kings': '2rs',
+                    '1 Chronicles': '1cr',
+                    '2 Chronicles': '2cr',
+                    'Ezra': 'ed',
+                    'Nehemiah': 'ne',
+                    'Esther': 'et',
+                    'Job': 'jó',
+                    'Psalms': 'sl',
+                    'Proverbs': 'pv',
+                    'Ecclesiastes': 'ec',
+                    'Song of Solomon': 'ct',
+                    'Isaiah': 'is',
+                    'Jeremiah': 'jr',
+                    'Lamentations': 'lm',
+                    'Ezekiel': 'ez',
+                    'Daniel': 'dn',
+                    'Hosea': 'os',
+                    'Joel': 'jl',
+                    'Amos': 'am',
+                    'Obadiah': 'ob',
+                    'Jonah': 'jn',
+                    'Micah': 'mq',
+                    'Nahum': 'na',
+                    'Habakkuk': 'hc',
+                    'Zephaniah': 'sf',
+                    'Haggai': 'ag',
+                    'Zechariah': 'zc',
+                    'Malachi': 'ml',
+                    'Matthew': 'mt',
+                    'Mark': 'mc',
+                    'Luke': 'lc',
+                    'John': 'jo',
+                    'Acts': 'atos',
+                    'Romans': 'rm',
+                    '1 Corinthians': '1co',
+                    '2 Corinthians': '2co',
+                    'Galatians': 'gl',
+                    'Ephesians': 'ef',
+                    'Philippians': 'fp',
+                    'Colossians': 'cl',
+                    '1 Thessalonians': '1ts',
+                    '2 Thessalonians': '2ts',
+                    '1 Timothy': '1tm',
+                    '2 Timothy': '2tm',
+                    'Titus': 'tt',
+                    'Philemon': 'fm',
+                    'Hebrews': 'hb',
+                    'James': 'tg',
+                    '1 Peter': '1pe',
+                    '2 Peter': '2pe',
+                    '1 John': '1jo',
+                    '2 John': '2jo',
+                    '3 John': '3jo',
+                    'Jude': 'jd',
+                    'Revelation': 'ap'
+                };
+                
+                bookAbbr = abbreviations[bookName];
+            }
+            
+            if (!bookAbbr) {
+                throw new Error(`Book abbreviation not found for ${bookName}`);
+            }
+            
+            const url = `/Biblias/2007 ACF/output_books/${bookAbbr}.json`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+            const chapterData = data.chapters[chapter - 1];
+            if (!chapterData) throw new Error(`Chapter not found: ${chapter}`);
+            
+            if (hasVersePart) {
+                const verses = [];
+                for (let v = startVerse; v <= (endVerse === -1 ? startVerse : endVerse); v++) {
+                    if (chapterData[v - 1]) {
+                        verses.push(`${v}. ${chapterData[v - 1].trim()}`);
+                    }
+                }
+                return verses.join('\n');
+            } else {
+                return chapterData.map((text: string, index: number) => 
+                    `${index + 1}. ${text.trim()}`
+                ).join('\n');
+            }
         } else {
             throw new Error(`Unsupported Bible version for cross-reference: ${version}`);
         }

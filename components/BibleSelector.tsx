@@ -1,7 +1,7 @@
 import React from 'react';
-import { BibleVersion, Language } from '../types';
-import { BIBLE_BOOKS } from '../constants';
-import { TranslationSet } from '../types';
+import { BibleVersion, Language } from '../src/types';
+import { BIBLE_BOOKS } from '../src/constants';
+import { TranslationSet } from '../src/types';
 import { BIBLE_VERSIONS } from '../src/hooks/useBibleApi';
 
 interface BibleSelectorProps {
@@ -46,6 +46,7 @@ const BibleSelector: React.FC<BibleSelectorProps> = ({ version, setVersion, book
                     <select id="version-floating" value={version} onChange={(e) => setVersion(e.target.value as BibleVersion)} className={selectStyles}>
                         <option value={BibleVersion.KJV}>{BIBLE_VERSIONS.KJV}</option>
                         <option value={BibleVersion.ACF2007}>{BIBLE_VERSIONS.ACF2007}</option>
+                        <option value={BibleVersion.ACF2007_LOCAL}>{BIBLE_VERSIONS.ACF2007_LOCAL}</option>
                     </select>
                 </div>
                 <div className="flex gap-4">
@@ -98,6 +99,7 @@ const BibleSelector: React.FC<BibleSelectorProps> = ({ version, setVersion, book
                       <select id="version" value={version} onChange={(e) => setVersion(e.target.value as BibleVersion)} className={selectStyles}>
                           <option value={BibleVersion.KJV}>{BIBLE_VERSIONS.KJV}</option>
                           <option value={BibleVersion.ACF2007}>{BIBLE_VERSIONS.ACF2007}</option>
+                          <option value={BibleVersion.ACF2007_LOCAL}>{BIBLE_VERSIONS.ACF2007_LOCAL}</option>
                       </select>
                   </div>
                   <div className="flex gap-4">
